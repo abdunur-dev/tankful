@@ -1,3 +1,6 @@
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { call } from "eve/events";
 import { defineHook } from "eve/hooks";
 
@@ -9,6 +12,7 @@ import {
   estimateTokensFromText,
   formatCallLabel,
   formatTankReport,
+  getAvgCallTokens,
   recordEstimatedText,
   recordRealUsage,
   recordStep,
@@ -187,19 +191,42 @@ export default defineHook({
 
     "turn.settled"() {
       let reportSummary = "";
+      let settledReport: ReturnType<typeof createTankReport> | null = null;
       tankState.update((prev) => {
         const settledState = {
           ...prev,
           inFlightEstimated: 0,
           activeRunId: null,
         };
-        const report = createTankReport(settledState, extension.config);
+        const avgCallTokens = getAvgCallTokens(
+          prev.sessionUsageCount,
+          prev.sessionTotalTokens,
+        );
+        const report = createTankReport(
+          settledState,
+          extension.config,
+          avgCallTokens,
+        );
+        settledReport = report;
         reportSummary = formatTankReport(report);
         return {
           ...settledState,
           lastReport: report,
         };
       });
+      if (settledReport) {
+        try {
+          const dir = join(process.cwd(), ".eve");
+          mkdirSync(dir, { recursive: true });
+          writeFileSync(
+            join(dir, "tankful-last-report.json"),
+            JSON.stringify(settledReport, null, 2) + "\n",
+            "utf8",
+          );
+        } catch {
+          // Ignore write errors in read-only or serverless environments.
+        }
+      }
       if (reportSummary) {
         console.info(reportSummary);
       }
