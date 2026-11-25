@@ -30,6 +30,8 @@ export interface TankReport {
   percentLeft: number;
   level: TankLevel;
   steps: number;
+  completedCalls: string[];
+  toolsHidden: boolean;
   estimated: boolean;
   loopDetected: boolean;
 }
@@ -48,8 +50,16 @@ export interface TankState {
   lastReport: TankReport | null;
 }
 
-export interface TankStatus extends TankReport {
+export interface TankStatus {
+  limit: number;
+  used: number;
+  remaining: number;
+  percentLeft: number;
+  level: TankLevel;
+  steps: number;
   completedCalls?: readonly string[];
+  estimated: boolean;
+  loopDetected: boolean;
 }
 
 export interface RealTokenUsage {
@@ -325,28 +335,52 @@ export function buildTankInstructions(
       ? ` Plan within your ${status.limit}-token budget (~${avg} tokens/call, ~${callsFit} calls fit): decide up front what you can finish, do the most important first, and say in one line what you plan to skip.`
       : "";
 
-  const completedList =
-    status.level !== "ok" || reserveReached
-      ? ` Tool calls completed this turn: ${
-          status.completedCalls && status.completedCalls.length > 0
-            ? status.completedCalls.join(", ")
-            : "none"
-        }.`
-      : "";
+  const completedSummary =
+    status.completedCalls && status.completedCalls.length > 0
+      ? status.completedCalls.join(", ")
+      : "none";
 
-  const rules =
-    ' Use only what tool results actually say. Don\'t add facts that aren\'t in them. If you stop before finishing everything the user asked for, for any reason, end your final message with a line: "Budget note: completed <list>; skipped <list>." In your Budget note, list as completed ONLY work backed by a tool call above or by what the user gave you. Anything the user asked for that has no completed tool call is skipped. Never write \'skipped none\' unless every requested item has a completed tool call.';
+  const toolsHidden =
+    reserveReached || status.level === "critical" || status.level === "empty";
 
   const loopWarning = status.loopDetected
     ? " WARNING: Loop detected — the same step was repeated multiple times in a row. Change your approach immediately."
     : "";
 
+  if (toolsHidden) {
+    const budgetNoteFirst =
+      `Your final message MUST end with this exact line, with the skipped part filled in: ` +
+      `"Budget note: completed ${completedSummary}; skipped <everything else the user asked for that is not in the completed list>."`;
+    return (
+      `${budgetNoteFirst} ${header} ${guidance} ` +
+      `Tool calls completed this turn: ${completedSummary}. ` +
+      `Use only what tool results actually say. Don't add facts that aren't in them.${loopWarning}`
+    );
+  }
+
+  const completedList =
+    status.level !== "ok"
+      ? ` Tool calls completed this turn: ${completedSummary}.`
+      : "";
+
+  const rules =
+    ' Use only what tool results actually say. Don\'t add facts that aren\'t in them. If you stop before finishing everything the user asked for, for any reason, end your final message with a line: "Budget note: completed <list>; skipped <list>." In your Budget note, list as completed ONLY work backed by a tool call above or by what the user gave you. Anything the user asked for that has no completed tool call is skipped. Never write \'skipped none\' unless every requested item has a completed tool call.';
+
   return `${header} ${guidance}${planHint}${completedList}${rules}${loopWarning}`;
 }
 
 /** Produces the end-of-run report snapshot. */
-export function createTankReport(state: TankState, config?: TankConfig): TankReport {
+export function createTankReport(
+  state: TankState,
+  config?: TankConfig,
+  avgCallTokens: number = DEFAULT_AVG_CALL_TOKENS,
+): TankReport {
   const status = getTankStatus(state, config);
+  const reserve = getDefaultReserve(avgCallTokens);
+  const toolsHidden =
+    (status.used > 0 && status.remaining < reserve) ||
+    status.level === "critical" ||
+    status.level === "empty";
   return {
     limit: status.limit,
     used: status.used,
@@ -354,6 +388,8 @@ export function createTankReport(state: TankState, config?: TankConfig): TankRep
     percentLeft: status.percentLeft,
     level: status.level,
     steps: status.steps,
+    completedCalls: [...(status.completedCalls ?? [])],
+    toolsHidden,
     estimated: status.estimated,
     loopDetected: status.loopDetected,
   };
@@ -423,9 +459,12 @@ export function shouldAllowTool(
 
 /** Formats an end-of-run report as a concise single-line summary. */
 export function formatTankReport(report: TankReport): string {
+  const callsText =
+    report.completedCalls.length > 0 ? report.completedCalls.join(", ") : "none";
   return (
-    `Tankful Report | limit=${report.limit} used=${report.used} ` +
-    `remaining=${report.remaining} (${report.percentLeft}%, ${report.level}) ` +
+    `Tankful Report | used ${report.used} of ${report.limit} tokens ` +
+    `(${report.remaining} remaining, ${report.percentLeft}%, level=${report.level}) | ` +
+    `completed: [${callsText}] | toolsHidden=${report.toolsHidden} | ` +
     `steps=${report.steps} estimated=${report.estimated} loopDetected=${report.loopDetected}`
   );
 }

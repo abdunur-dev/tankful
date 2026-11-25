@@ -228,12 +228,14 @@ describe("tankful core", () => {
       percentLeft: 5,
       level: "critical",
       steps: 3,
+      completedCalls: ["search_docs(usage tracking)"],
       estimated: false,
       loopDetected: true,
     });
+    assert.ok(criticalMsg.startsWith("Your final message MUST end with this exact line"));
+    assert.match(criticalMsg, /Budget note: completed search_docs\(usage tracking\); skipped/);
     assert.match(criticalMsg, /level=critical/);
     assert.match(criticalMsg, /Stop gathering new info/i);
-    assert.match(criticalMsg, /Budget note: completed <list>; skipped <list>\./);
     assert.match(criticalMsg, /Loop detected/i);
 
     const emptyMsg = buildTankInstructions({
@@ -243,12 +245,14 @@ describe("tankful core", () => {
       percentLeft: 0,
       level: "empty",
       steps: 4,
+      completedCalls: [],
       estimated: false,
       loopDetected: false,
     });
+    assert.ok(emptyMsg.startsWith("Your final message MUST end with this exact line"));
+    assert.match(emptyMsg, /Budget note: completed none; skipped/);
     assert.match(emptyMsg, /level=empty/);
     assert.match(emptyMsg, /Do not start new work/i);
-    assert.match(emptyMsg, /Budget note: completed <list>; skipped <list>\./);
   });
 
   it("rejects invalid limits and thresholds", () => {
@@ -272,7 +276,7 @@ describe("tankful core", () => {
     state = recordStep(state, "read:file", config);
     state = recordStep(state, "read:file", config);
 
-    const report = createTankReport(state, config);
+    const report = createTankReport(state, config, 100);
     assert.deepEqual(report, {
       limit: 500,
       used: 303,
@@ -280,17 +284,27 @@ describe("tankful core", () => {
       percentLeft: 39.4,
       level: "ok",
       steps: 2,
+      completedCalls: [],
+      toolsHidden: false,
       estimated: true,
       loopDetected: true,
     });
 
     const formatted = formatTankReport(report);
-    assert.match(formatted, /limit=500/);
-    assert.match(formatted, /used=303/);
-    assert.match(formatted, /remaining=197/);
+    assert.match(formatted, /used 303 of 500 tokens/);
+    assert.match(formatted, /level=ok/);
+    assert.match(formatted, /completed: \[none\]/);
+    assert.match(formatted, /toolsHidden=false/);
     assert.match(formatted, /steps=2/);
     assert.match(formatted, /estimated=true/);
     assert.match(formatted, /loopDetected=true/);
+
+    // Verify JSON serialization shape written to .eve/tankful-last-report.json
+    const parsed = JSON.parse(JSON.stringify(report));
+    assert.equal(parsed.used, 303);
+    assert.equal(parsed.limit, 500);
+    assert.deepEqual(parsed.completedCalls, []);
+    assert.equal(parsed.toolsHidden, false);
   });
 
   it("estimates in-flight call from lastCallTokens and reconciles when usage.recorded arrives", () => {
@@ -362,7 +376,7 @@ describe("tankful core", () => {
 
     const status = getTankStatus(state, config);
     assert.deepEqual(status.completedCalls, ["search_docs(usage tracking)"]);
-    const msg = buildTankInstructions(status);
+    const msg = buildTankInstructions(status, 100);
     assert.match(msg, /Tool calls completed this turn: search_docs\(usage tracking\)\./);
     assert.match(msg, /Never write 'skipped none' unless every requested item has a completed tool call\./);
   });
