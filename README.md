@@ -2,7 +2,7 @@
 
 > eve can cut an agent off at a limit. Tankful lets the agent see its tank and plan around it.
 
-The budget is soft, since a call can't be stopped midway, so pair it with `eve`'s `limits.sessionUsage`. Tested on one real model (Groq `gpt-oss-120b`) over N runs.
+The budget is soft, since a call can't be stopped midway, so pair it with `eve`'s `limits.sessionUsage`. Tested on two Groq models (`gpt-oss-120b` and `gpt-oss-20b`), one run each of the final version, on a 5-topic lookup task with limit 14,000. Both runs stopped after 3 topics and the Budget note correctly named the skipped topics. Earlier versions omitted or got the note wrong in 2 of 3 runs, which led to the pre-filled note.
 
 ## Setup
 
@@ -69,11 +69,37 @@ Set `TANKFUL_DEBUG=1` in the environment to log `used`, `remaining`, `percentLef
 
 ## Results
 
-| Run | Model | Prompt | Searches made | Budget note correct? | Tokens vs limit |
-| --- | --- | --- | --- | --- | --- |
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
+| Run | Model | Searches | Budget note correct? | Used / limit |
+| --- | --- | --- | --- | --- |
+| D | gpt-oss-120b | 3 of 5 | Yes | about 14.8K / 14,000 |
+| E | gpt-oss-20b | 3 of 5 | Yes | 15,269 / 14,000 (+9.1%) |
+
+- The budget is soft, so a call can't be stopped midway and usage ran about 6% to 9% over the limit; set `limit` about 10% below your real cap and pair Tankful with `eve`'s `limits.sessionUsage`.
+- This is a smoke test (one task, two runs), not a benchmark.
+- In run E, Tankful's own count (`15,269`) matched `eve`'s footer (about `15.3K`).
+
+### Sample report
+
+`.eve/tankful-last-report.json` from run E:
+
+```json
+{
+  "limit": 14000,
+  "used": 15269,
+  "remaining": 0,
+  "percentLeft": 0,
+  "level": "empty",
+  "steps": 3,
+  "completedCalls": [
+    "search_docs(usage tracking)",
+    "search_docs(loop detection)",
+    "search_docs(dynamic instructions)"
+  ],
+  "toolsHidden": true,
+  "estimated": false,
+  "loopDetected": false
+}
+```
 
 ## Known limits
 
