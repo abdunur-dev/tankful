@@ -2,15 +2,19 @@
 
 > eve can cut an agent off at a limit. Tankful lets the agent see its tank and plan around it.
 
-## Install
+The budget is soft, since a call can't be stopped midway, so pair it with `eve`'s `limits.sessionUsage`. Tested on one real model (Groq `gpt-oss-120b`) over N runs.
+
+## Setup
+
+Follow these steps in order:
+
+1. **Install**:
 
 ```bash
 npm install tankful
 ```
 
-## Configure
-
-Mount Tankful in your eve agent under `agent/extensions/tankful.ts`:
+2. **Mount `agent/extensions/tankful.ts`**:
 
 ```ts
 import tankful from "tankful";
@@ -24,9 +28,11 @@ export default tankful({
 });
 ```
 
-### Enforce tool cutoff on host tools (optional)
+Recommended minimum `limit`: **at least `10_000` tokens** (or `2–3×` your average call cost) so the agent can complete multiple steps before hitting the default `4500`-token final-answer reserve.
 
-Wrap your own `agent/tools/*.ts` with `whenBudgetAllows` so the host agent hides them early enough to leave room for the final answer:
+3. **(Optional) Wrap tools with `tankful/guard`**:
+
+`tankful/guard` reads state from the mounted `tankful` extension, so `agent/extensions/tankful.ts` **must be mounted first**.
 
 ```ts
 import { defineTool } from "eve/tools";
@@ -35,20 +41,27 @@ import { whenBudgetAllows } from "tankful/guard";
 export default whenBudgetAllows(defineTool({ /* ... */ }));
 ```
 
-By default, `whenBudgetAllows` hides the tool when `remaining < reserve`, where `reserve` defaults to `1.5 × average call cost` (falling back to `4500` tokens before any call). You can also pass an explicit `{ reserve: 2000 }` or use `{ disableAt: "critical" }` (or `"low"` / `"empty"`) instead.
+### `whenBudgetAllows` options
+
+- **`reserve`** (number): Minimum tokens to reserve for the final answer. Tools are hidden when `remaining < reserve`. Defaults to `1.5 × average call cost` seen in the session (`4500` tokens before any call).
+- **`disableAt`** (`"low" | "critical" | "empty"`): Alternative or additional level threshold at or below which the tool is hidden (for example, `{ disableAt: "critical" }`).
 
 ## How it works
 
 1. **Per-turn (per-task) budget**: Tankful resets its fuel tank on every `turn.started` event (while keeping the previous turn's `lastReport` and session average tokens/call), so each user request/task starts with a full tank.
 2. **Tracks token usage (`used`)**: Listens to `usage.recorded` hook events and sums `inputTokens + outputTokens`. Because `eve`'s `Usage.inputTokens` already includes `cacheReadTokens` and `cacheWriteTokens`, cached tokens are included in `used` (not subtracted). While a call is in-flight (or if `usage.recorded` is missing), Tankful estimates from the previous call's token count or ~4 chars/token and marks `estimated: true`.
-3. **Exposes `tankful__check_tank`**: A tool the agent can call anytime to inspect `{ limit, used, remaining, percentLeft, level, steps, estimated, loopDetected }`.
-4. **Adapts via dynamic instructions**: Before every model call, `defineDynamic` injects budget guidance (`role: "system"` at `ok`/`low`, `role: "user"` at `critical`/`empty`) and a start-of-turn plan hint:
+3. **Exposes `tankful__check_tank`**: A tool the agent can call anytime to inspect `{ limit, used, remaining, percentLeft, level, steps, completedCalls, estimated, loopDetected }`.
+4. **Adapts via dynamic instructions**: Before every model call, `defineDynamic` injects budget guidance (`role: "system"` at `ok`/`low`, `role: "user"` at `critical`/`empty` or when `reserve` is reached) and a start-of-turn plan hint:
    - `ok` (> 30% left): Work thoroughly and use tools as needed.
    - `low` (<= 30% left): Keep answers short and skip optional work.
-   - `critical` (<= 10% left): Stop gathering new info and write your final answer now.
-   - `empty` (0 left): Do not start new work.
+   - `critical` (<= 10% left): Stop gathering new info, do not call tools, and write your final answer now.
+   - `empty` (0 left): Do not start new work or call tools.
 5. **Detects loops**: Tracks consecutive identical tool calls (`name + input`), excluding Tankful's own tools (`check_tank` / `tankful__check_tank`). Repeating the same step `loopRepeats` times in a row adds a loop warning.
 6. **End-of-run report**: On `turn.settled`, computes and logs `{ limit, used, remaining, steps, estimated, loopDetected }`.
+
+## Debug logging
+
+Set `TANKFUL_DEBUG=1` in the environment to log `used`, `remaining`, `percentLeft`, `level`, and the exact injected instruction before every model call.
 
 ## How it complements `eve` `limits`
 
@@ -57,7 +70,14 @@ By default, `whenBudgetAllows` hides the tool when `remaining < reserve`, where 
 ## Known limits
 
 - **Models may ignore advisory instructions**: Instructions alone are not a hard stop; some models will keep calling tools at `critical` or `empty` unless you wrap host tools with `whenBudgetAllows(...)`.
-- **Cutoff requires wrapping host tools**: In `eve`, an extension cannot disable tools defined by the host agent. Hard tool cutoff at `critical`/`empty` requires wrapping your `agent/tools/*.ts` with `whenBudgetAllows`.
+- **Cutoff hides only wrapped tools**: `eve`'s built-in tools (`bash`, `read_file`, `write_file`, `edit_file`, `web_fetch`, `glob`, `grep`) stay available unless overridden in `agent/tools/<name>.ts` with `whenBudgetAllows(...)` (per `eve`'s built-in tools slot mechanism):
+  ```ts
+  // agent/tools/bash.ts
+  import { bash } from "eve/tools/bash";
+  import { whenBudgetAllows } from "tankful/guard";
+
+  export default whenBudgetAllows(bash);
+  ```
 - **Per-turn scope**: Tankful resets on `turn.started` and does not enforce a multi-turn session cap (use `limits.sessionUsage` for session-wide caps).
 - **Post-call accounting**: `usage.recorded` arrives after a model call finishes, so a single large call can overshoot `limit` before the next step sees `level=empty`.
 - **Subagent isolation**: Because `defineState` is isolated per session in `eve`, subagents get their own independent state.
