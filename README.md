@@ -57,7 +57,7 @@ export default whenBudgetAllows(defineTool({ /* ... */ }));
    - `critical` (<= 10% left): Stop gathering new info, do not call tools, and write your final answer now.
    - `empty` (0 left): Do not start new work or call tools.
 5. **Detects loops**: Tracks consecutive identical tool calls (`name + input`), excluding Tankful's own tools (`check_tank` / `tankful__check_tank`). Repeating the same step `loopRepeats` times in a row adds a loop warning.
-6. **End-of-run report**: On `turn.settled`, computes and logs `{ limit, used, remaining, steps, estimated, loopDetected }`.
+6. **End-of-run report**: On `turn.settled`, computes and logs `{ limit, used, remaining, steps, completedCalls, toolsHidden, estimated, loopDetected }` and writes `.eve/tankful-last-report.json` with fields `limit`, `used`, `remaining`, `percentLeft`, `level`, `steps`, `completedCalls`, `toolsHidden`, `estimated`, and `loopDetected`. Read it with `cat .eve/tankful-last-report.json` (or `Get-Content .eve\tankful-last-report.json` in PowerShell). There is no option to switch the report file off; it writes on `turn.settled` and skips silently if the directory is read-only.
 
 ## Debug logging
 
@@ -67,7 +67,17 @@ Set `TANKFUL_DEBUG=1` in the environment to log `used`, `remaining`, `percentLef
 
 `eve`'s built-in `limits.sessionUsage` is **per session** (or per approved continuation window across turns) and acts as a hard circuit breaker that pauses or stops a session once a token or cost threshold is crossed, without giving the model any visibility beforehand. Tankful's budget is **per turn (per task)**—resetting on `turn.started`—and acts as the soft, adaptive layer inside that budget by exposing `check_tank`, steering the model through `ok` / `low` / `critical` / `empty` instructions, and warning on repetitive loops so the agent can wrap up cleanly. Pairing Tankful (e.g. `limit: 50_000` per turn) with `limits.sessionUsage` (e.g. `200_000` per session) gives you per-task graceful degradation plus a session-wide hard runtime safety net.
 
+## Results
+
+| Run | Model | Prompt | Searches made | Budget note correct? | Tokens vs limit |
+| --- | --- | --- | --- | --- | --- |
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+
 ## Known limits
+
+- **Tankful manages budget, not accuracy**: A model that skips tool calls can still write ungrounded text or omit the `Budget note`.
 
 - **Models may ignore advisory instructions**: Instructions alone are not a hard stop; some models will keep calling tools at `critical` or `empty` unless you wrap host tools with `whenBudgetAllows(...)`.
 - **Cutoff hides only wrapped tools**: `eve`'s built-in tools (`bash`, `read_file`, `write_file`, `edit_file`, `web_fetch`, `glob`, `grep`) stay available unless overridden in `agent/tools/<name>.ts` with `whenBudgetAllows(...)` (per `eve`'s built-in tools slot mechanism):
