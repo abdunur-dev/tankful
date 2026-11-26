@@ -27,7 +27,9 @@ export default tankful({
       <H2 id="options">Options</H2>
       <PropTable
         rows={[
-          { name: "limit", type: "number", desc: "Tokens per turn. The tank refills to this on every turn.started." },
+          { name: "limit", type: "number", def: "derived if cap supplied", desc: "Explicit soft limit per turn. With both options set, limit wins unchanged: no headroom deduction or clamp to turnCapTokens." },
+          { name: "turnCapTokens", type: "integer", def: "not set", desc: "Reference cap for a single turn, not the remaining eve session allowance." },
+          { name: "headroom", type: "number", def: "0.1", desc: "Fraction to leave unused when deriving the soft limit. The result is floor(turnCapTokens × (1 − headroom)). Zero disables the deduction." },
           { name: "lowAt", type: "number", def: "0.3", desc: <>Fraction left at or below which the level is <code>low</code>.</> },
           { name: "criticalAt", type: "number", def: "0.1", desc: <>Fraction left at or below which the level is <code>critical</code>. Must be less than <code>lowAt</code>.</> },
           { name: "loopRepeats", type: "integer", def: "3", desc: "Identical tool calls in a row that count as a loop." },
@@ -35,12 +37,15 @@ export default tankful({
       />
       <H2 id="validation">Validation</H2>
       <ul>
-        <li><code>limit</code> must be a finite number greater than 0.</li>
+        <li>Supply <code>limit</code> or <code>turnCapTokens</code>, even without an eve hard limit. Tankful does not discover a cap.</li>
+        <li>If supplied, <code>limit</code> must be positive and finite, and <code>turnCapTokens</code> must be a safe integer of at least 2.</li>
+        <li><code>headroom</code> must be finite and in [0, 1). If deriving a limit, at least one token must remain. With explicit <code>limit</code>, the other options are validated but unused.</li>
         <li><code>lowAt</code> must be between 0 and 1, exclusive.</li>
         <li><code>criticalAt</code> must be at least 0 and less than <code>lowAt</code>.</li>
         <li><code>loopRepeats</code> must be an integer of at least 2.</li>
       </ul>
       <p>Invalid config fails when eve loads the extension, not halfway through a turn.</p>
+      <p>Every turn refills to the same soft limit, regardless of earlier spend. See <DocLink href="/docs/eve-limits">Pair with eve limits</DocLink> for a multi-turn example.</p>
     </>
   ),
 };

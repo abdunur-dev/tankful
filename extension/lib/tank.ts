@@ -10,7 +10,9 @@
 export type TankLevel = "ok" | "low" | "critical" | "empty";
 
 export interface TankConfig {
-  limit: number;
+  limit?: number;
+  turnCapTokens?: number;
+  headroom?: number;
   lowAt?: number;
   criticalAt?: number;
   loopRepeats?: number;
@@ -73,15 +75,35 @@ const DEFAULT_LOOP_REPEATS = 3;
 const CHARS_PER_TOKEN = 4;
 export const DEFAULT_AVG_CALL_TOKENS = 3000;
 
+export function resolveTurnLimit({ limit, turnCapTokens, headroom = 0.1 }: TankConfig): number {
+  if (turnCapTokens !== undefined && (!Number.isSafeInteger(turnCapTokens) || turnCapTokens < 2)) {
+    throw new Error("Tankful turnCapTokens must be a safe integer of at least 2.");
+  }
+  if (!Number.isFinite(headroom) || headroom < 0 || headroom >= 1) {
+    throw new Error("Tankful headroom must be a finite fraction from 0 (inclusive) to 1 (exclusive).");
+  }
+  if (limit !== undefined) {
+    if (!Number.isFinite(limit) || limit <= 0) {
+      throw new Error("Tankful limit must be a finite number greater than 0.");
+    }
+    return limit;
+  }
+  if (turnCapTokens === undefined) {
+    throw new Error("Set limit or turnCapTokens for the per-turn tank.");
+  }
+  // Floor the decimal fraction once. In binary floats, 100 * (1 - 0.8) is just below 20.
+  const [coefficient, exponent = "0"] = headroom.toString().split("e");
+  const [whole, fraction = ""] = coefficient.split(".");
+  const scale = 10n ** BigInt(fraction.length - Number(exponent));
+  const reserved = BigInt(whole + fraction);
+  const derived = Number(BigInt(turnCapTokens) * (scale - reserved) / scale);
+  if (derived < 1) throw new Error("Tankful headroom leaves less than one token under turnCapTokens.");
+  return derived;
+}
+
 /** Validates user configuration and applies defaults. */
 export function resolveTankConfig(config: TankConfig): ResolvedTankConfig {
-  if (
-    typeof config.limit !== "number" ||
-    !Number.isFinite(config.limit) ||
-    config.limit <= 0
-  ) {
-    throw new Error("Tankful limit must be a finite number greater than 0.");
-  }
+  const limit = resolveTurnLimit(config);
 
   const lowAt = config.lowAt ?? DEFAULT_LOW_AT;
   if (typeof lowAt !== "number" || !Number.isFinite(lowAt) || lowAt <= 0 || lowAt >= 1) {
@@ -108,7 +130,7 @@ export function resolveTankConfig(config: TankConfig): ResolvedTankConfig {
   }
 
   return {
-    limit: config.limit,
+    limit,
     lowAt,
     criticalAt,
     loopRepeats,

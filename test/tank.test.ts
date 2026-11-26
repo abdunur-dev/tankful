@@ -19,6 +19,50 @@ import {
 } from "../extension/lib/tank.ts";
 
 describe("tankful core", () => {
+  it("refills each turn from turnCapTokens alone using 10% default headroom", () => {
+    const config = { turnCapTokens: 20_001 };
+    const spent = recordRealUsage(createTankState(config), { inputTokens: 15_000, outputTokens: 2_000 });
+    const report = createTankReport(spent, config);
+    assert.equal(report.limit, 18_000);
+    assert.equal(report.remaining, 1_000);
+    const next = getTankStatus(createTankState(config, report), config);
+    assert.equal(next.remaining, 18_000);
+    assert.equal(next.used, 0);
+  });
+
+  it("uses limit unchanged when both limit and turnCapTokens are set", () => {
+    assert.equal(resolveTankConfig({ limit: 100, turnCapTokens: 20, headroom: 0.25 }).limit, 100);
+    assert.equal(resolveTankConfig({ limit: 100, turnCapTokens: 2, headroom: 0.9 }).limit, 100);
+    assert.equal(resolveTankConfig({ limit: 100, headroom: 0.25 }).limit, 100);
+  });
+
+  it("requires limit or turnCapTokens even when headroom is supplied", () => {
+    assert.throws(() => resolveTankConfig({}), /limit or turnCapTokens/);
+    assert.throws(() => resolveTankConfig({ headroom: 0.1 }), /limit or turnCapTokens/);
+  });
+
+  it("accepts zero headroom and rounds custom decimal headroom down exactly once", () => {
+    assert.equal(resolveTankConfig({ turnCapTokens: 99, headroom: 0 }).limit, 99);
+    assert.equal(resolveTankConfig({ turnCapTokens: 101, headroom: 0.25 }).limit, 75);
+    assert.equal(resolveTankConfig({ turnCapTokens: 100, headroom: 0.8 }).limit, 20);
+    assert.equal(resolveTankConfig({ turnCapTokens: 10, headroom: 1e-7 }).limit, 9);
+    assert.equal(resolveTankConfig({ turnCapTokens: Number.MAX_SAFE_INTEGER }).limit, 8_106_479_329_266_891);
+  });
+
+  it("rejects invalid cap, limit, headroom, and zero derived budgets", () => {
+    assert.throws(() => resolveTankConfig({ limit: 0, turnCapTokens: 20 }), /limit/i);
+    for (const turnCapTokens of [1, -1, 2.5, Infinity, NaN, Number.MAX_SAFE_INTEGER + 1]) {
+      assert.throws(() => resolveTankConfig({ turnCapTokens }), /turnCapTokens/);
+      assert.throws(() => resolveTankConfig({ limit: 100, turnCapTokens }), /turnCapTokens/);
+    }
+    for (const headroom of [-0.1, 1, 1.1, NaN, Infinity]) {
+      assert.throws(() => resolveTankConfig({ turnCapTokens: 100, headroom }), /headroom/);
+      assert.throws(() => resolveTankConfig({ limit: 100, headroom }), /headroom/);
+    }
+    assert.equal(resolveTankConfig({ turnCapTokens: 2 }).limit, 1);
+    assert.throws(() => resolveTankConfig({ turnCapTokens: 2, headroom: 0.9 }), /less than one token/);
+  });
+
   it("starts full with zero usage and ok level", () => {
     const state = createTankState({ limit: 1000 });
     const status = getTankStatus(state);

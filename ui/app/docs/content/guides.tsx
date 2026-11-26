@@ -95,26 +95,35 @@ export const eveLimits: DocPage = {
       </div>
       <H2 id="together">Use both</H2>
       <p>
-        A per-turn Tankful budget gives each task a graceful ending. A session cap in eve is the safety net if something
-        goes wrong anyway.
+        Tankful refills every turn. eve checks its session policy between model calls. Its policy can count
+        tokens, cost, or both; it does not expose a single remaining-token allowance to Tankful. If your
+        policy counts input plus output, you can choose to share a constant, without sharing state:
       </p>
+      <CodeBlock filename="agent/lib/budget.ts" code="export const CAP_TOKENS = 20_000;" />
       <CodeBlock
         filename="agent/extensions/tankful.ts"
         code={`import tankful from "tankful";
+import { CAP_TOKENS } from "../lib/budget";
 
-export default tankful({ limit: 50_000 });`}
+export default tankful({ turnCapTokens: CAP_TOKENS, headroom: 0.2 }); // 16,000 per turn`}
       />
       <CodeBlock
         filename="agent/agent.ts"
         code={`import { defineAgent } from "eve";
+import { CAP_TOKENS } from "./lib/budget";
 
 export default defineAgent({
   limits: {
     sessionUsage: ({ window }) =>
-      window.inputTokens + window.outputTokens >= 200_000,
+      window.inputTokens + window.outputTokens >= CAP_TOKENS,
   },
 });`}
       />
+      <p>
+        If earlier turns spent 17,000 tokens in the current eve window, the session threshold is only
+        3,000 tokens away. Tankful still starts this turn with 16,000. eve may pause first, and an
+        in-flight call can overshoot. Disabling the eve limit changes neither the refill nor the 16,000 figure.
+      </p>
     </>
   ),
 };

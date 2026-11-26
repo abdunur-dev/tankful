@@ -30,6 +30,23 @@ export default tankful({
 
 Recommended minimum `limit`: **at least `10_000` tokens** (or `2–3×` your average call cost) so the agent can complete multiple steps before hitting the default `4500`-token final-answer reserve.
 
+Instead of choosing the soft limit directly, use `tankful({ turnCapTokens: 20_000 })`.
+This gives **each turn** 18,000 tokens. To leave 20% instead of 10%, set `headroom: 0.2`
+for a 16,000-token tank. The formula is `floor(turnCapTokens × (1 − headroom))`.
+The cap must be a safe integer of at least 2; headroom must be finite, at least 0 and
+less than 1. A derived budget must leave at least one token.
+
+If both `limit` and `turnCapTokens` are supplied, **`limit` wins unchanged**: no headroom
+is deducted and the cap does not clamp it. Supplied options must still be valid.
+Supply at least one budget option, even when eve's session limit is disabled.
+Tankful does not discover a session cap or model context window.
+
+The tank refills every turn; eve's session usage does not. For example, if your eve policy
+pauses at 20,000 total input + output tokens and earlier turns spent 17,000 in the current
+window, only 3,000 remain before that threshold. A `turnCapTokens` of 20,000 with default headroom still starts the next
+turn at 18,000. eve can pause before Tankful asks for a final answer, and a call in progress
+can overshoot either threshold. The 10% headroom is not a guarantee.
+
 3. **(Optional) Wrap tools with `tankful/guard`**:
 
 `tankful/guard` reads state from the mounted `tankful` extension, so `agent/extensions/tankful.ts` **must be mounted first**.
