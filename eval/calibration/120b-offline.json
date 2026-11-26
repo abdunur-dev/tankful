@@ -1,0 +1,24 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "kind": "offline-digit-bound",
+  "scored": false,
+  "revision": "b5c939de8f754692c1647ca79fbf85e8c1e70f8a",
+  "headerBytes": 8192,
+  "headerSha256": "a0d0e8b1e7f04a317eb1b5048ca10177a7947a905c812b2661423a5654348996",
+  "sourceFreeze": "72814a014d3b3f936dce450848a9a1c0f025abca",
+  "ledgerFloorByPage": [
+    2400,
+    2400,
+    2400,
+    2400,
+    2400,
+    2400,
+    2400,
+    2400
+  ],
+  "floorThroughSix": 14400,
+  "limit": 14000,
+  "premise": "Each fresh ledger is sent intact once, in a distinct request.",
+  "providerCalls": 0,
+  "liveCalibration": "not run: no provider credentials"
+}
