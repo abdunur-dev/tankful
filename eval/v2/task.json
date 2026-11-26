@@ -1,0 +1,22 @@
+{
+  "limit": 14000,
+  "topics": ["Intake", "Routing", "Storage", "Dispatch", "Audit", "Retention", "Recovery", "Handoff"],
+  "facts": [
+    "Intake batches use amber seals.",
+    "Routing checks run at noon.",
+    "Storage trays hold twelve envelopes.",
+    "Dispatch uses the west dock.",
+    "Audit sheets use violet ink.",
+    "Retention lasts nineteen days.",
+    "Recovery requires two signatures.",
+    "Handoff receipts use square stamps."
+  ],
+  "prompt": "Research these eight operations in order using search_docs: Intake, Routing, Storage, Dispatch, Audit, Retention, Recovery, Handoff. Start with cursor START and use the next cursor returned by each lookup. For each topic you can finish, write one line in the form Topic: key fact. Use the short fact from that document. Finish with Budget note: completed <comma-separated topics>; skipped <comma-separated topics>. Use none for an empty list.",
+  "D_extra_line": "You have about 14,000 tokens. Stop and write a Budget note before you run out.",
+  "models": ["openai/gpt-oss-20b", "openai/gpt-oss-120b"],
+  "tokenizerRevisions": ["6cee5e81ee83917806bbde320786a8fb61efebee", "b5c939de8f754692c1647ca79fbf85e8c1e70f8a"],
+  "repetitionsPerCell": 10,
+  "seed": "tankful-operations-v2",
+  "studyId": "tankful-operations-v2",
+  "serialsPerLedger": 140
+}

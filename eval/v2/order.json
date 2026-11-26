@@ -1,0 +1,642 @@
+[
+  {
+    "order": 1,
+    "id": "v2-gpt-oss-120b-A-1",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 2,
+    "id": "v2-gpt-oss-120b-C-1",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 1,
+    "manualReview": true
+  },
+  {
+    "order": 3,
+    "id": "v2-gpt-oss-20b-A-1",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 4,
+    "id": "v2-gpt-oss-20b-B-1",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 5,
+    "id": "v2-gpt-oss-20b-C-1",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 6,
+    "id": "v2-gpt-oss-120b-B-1",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 7,
+    "id": "v2-gpt-oss-120b-D-1",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 8,
+    "id": "v2-gpt-oss-20b-D-1",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 1,
+    "manualReview": false
+  },
+  {
+    "order": 9,
+    "id": "v2-gpt-oss-120b-C-2",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 10,
+    "id": "v2-gpt-oss-20b-A-2",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 2,
+    "manualReview": true
+  },
+  {
+    "order": 11,
+    "id": "v2-gpt-oss-20b-C-2",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 12,
+    "id": "v2-gpt-oss-20b-B-2",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 13,
+    "id": "v2-gpt-oss-120b-B-2",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 14,
+    "id": "v2-gpt-oss-20b-D-2",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 15,
+    "id": "v2-gpt-oss-120b-D-2",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 16,
+    "id": "v2-gpt-oss-120b-A-2",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 2,
+    "manualReview": false
+  },
+  {
+    "order": 17,
+    "id": "v2-gpt-oss-120b-D-3",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 18,
+    "id": "v2-gpt-oss-20b-A-3",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 19,
+    "id": "v2-gpt-oss-120b-A-3",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 20,
+    "id": "v2-gpt-oss-20b-B-3",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 3,
+    "manualReview": true
+  },
+  {
+    "order": 21,
+    "id": "v2-gpt-oss-20b-C-3",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 22,
+    "id": "v2-gpt-oss-120b-C-3",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 23,
+    "id": "v2-gpt-oss-120b-B-3",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 24,
+    "id": "v2-gpt-oss-20b-D-3",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 3,
+    "manualReview": false
+  },
+  {
+    "order": 25,
+    "id": "v2-gpt-oss-120b-B-4",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 26,
+    "id": "v2-gpt-oss-120b-A-4",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 27,
+    "id": "v2-gpt-oss-20b-B-4",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 4,
+    "manualReview": true
+  },
+  {
+    "order": 28,
+    "id": "v2-gpt-oss-20b-A-4",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 29,
+    "id": "v2-gpt-oss-120b-D-4",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 30,
+    "id": "v2-gpt-oss-20b-D-4",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 31,
+    "id": "v2-gpt-oss-20b-C-4",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 32,
+    "id": "v2-gpt-oss-120b-C-4",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 4,
+    "manualReview": false
+  },
+  {
+    "order": 33,
+    "id": "v2-gpt-oss-120b-C-5",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 34,
+    "id": "v2-gpt-oss-120b-B-5",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 5,
+    "manualReview": true
+  },
+  {
+    "order": 35,
+    "id": "v2-gpt-oss-120b-A-5",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 36,
+    "id": "v2-gpt-oss-120b-D-5",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 37,
+    "id": "v2-gpt-oss-20b-A-5",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 38,
+    "id": "v2-gpt-oss-20b-D-5",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 39,
+    "id": "v2-gpt-oss-20b-B-5",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 40,
+    "id": "v2-gpt-oss-20b-C-5",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 5,
+    "manualReview": false
+  },
+  {
+    "order": 41,
+    "id": "v2-gpt-oss-120b-C-6",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 42,
+    "id": "v2-gpt-oss-120b-A-6",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 6,
+    "manualReview": true
+  },
+  {
+    "order": 43,
+    "id": "v2-gpt-oss-120b-B-6",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 44,
+    "id": "v2-gpt-oss-20b-A-6",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 45,
+    "id": "v2-gpt-oss-120b-D-6",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 46,
+    "id": "v2-gpt-oss-20b-D-6",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 47,
+    "id": "v2-gpt-oss-20b-C-6",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 6,
+    "manualReview": true
+  },
+  {
+    "order": 48,
+    "id": "v2-gpt-oss-20b-B-6",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 6,
+    "manualReview": false
+  },
+  {
+    "order": 49,
+    "id": "v2-gpt-oss-20b-B-7",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 50,
+    "id": "v2-gpt-oss-20b-A-7",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 51,
+    "id": "v2-gpt-oss-120b-B-7",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 52,
+    "id": "v2-gpt-oss-120b-D-7",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 53,
+    "id": "v2-gpt-oss-20b-C-7",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 54,
+    "id": "v2-gpt-oss-20b-D-7",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 7,
+    "manualReview": true
+  },
+  {
+    "order": 55,
+    "id": "v2-gpt-oss-120b-A-7",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 56,
+    "id": "v2-gpt-oss-120b-C-7",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 7,
+    "manualReview": false
+  },
+  {
+    "order": 57,
+    "id": "v2-gpt-oss-120b-C-8",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 58,
+    "id": "v2-gpt-oss-120b-B-8",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 59,
+    "id": "v2-gpt-oss-120b-A-8",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 60,
+    "id": "v2-gpt-oss-20b-C-8",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 61,
+    "id": "v2-gpt-oss-20b-A-8",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 8,
+    "manualReview": true
+  },
+  {
+    "order": 62,
+    "id": "v2-gpt-oss-20b-B-8",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 63,
+    "id": "v2-gpt-oss-120b-D-8",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 8,
+    "manualReview": true
+  },
+  {
+    "order": 64,
+    "id": "v2-gpt-oss-20b-D-8",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 8,
+    "manualReview": false
+  },
+  {
+    "order": 65,
+    "id": "v2-gpt-oss-120b-D-9",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 66,
+    "id": "v2-gpt-oss-20b-B-9",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 67,
+    "id": "v2-gpt-oss-120b-C-9",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 68,
+    "id": "v2-gpt-oss-20b-A-9",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 69,
+    "id": "v2-gpt-oss-20b-C-9",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 70,
+    "id": "v2-gpt-oss-120b-A-9",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 71,
+    "id": "v2-gpt-oss-120b-B-9",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 72,
+    "id": "v2-gpt-oss-20b-D-9",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 9,
+    "manualReview": false
+  },
+  {
+    "order": 73,
+    "id": "v2-gpt-oss-120b-A-10",
+    "model": "openai/gpt-oss-120b",
+    "condition": "A",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 74,
+    "id": "v2-gpt-oss-20b-C-10",
+    "model": "openai/gpt-oss-20b",
+    "condition": "C",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 75,
+    "id": "v2-gpt-oss-120b-D-10",
+    "model": "openai/gpt-oss-120b",
+    "condition": "D",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 76,
+    "id": "v2-gpt-oss-120b-C-10",
+    "model": "openai/gpt-oss-120b",
+    "condition": "C",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 77,
+    "id": "v2-gpt-oss-20b-B-10",
+    "model": "openai/gpt-oss-20b",
+    "condition": "B",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 78,
+    "id": "v2-gpt-oss-20b-A-10",
+    "model": "openai/gpt-oss-20b",
+    "condition": "A",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 79,
+    "id": "v2-gpt-oss-120b-B-10",
+    "model": "openai/gpt-oss-120b",
+    "condition": "B",
+    "rep": 10,
+    "manualReview": false
+  },
+  {
+    "order": 80,
+    "id": "v2-gpt-oss-20b-D-10",
+    "model": "openai/gpt-oss-20b",
+    "condition": "D",
+    "rep": 10,
+    "manualReview": false
+  }
+]
