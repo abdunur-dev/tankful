@@ -101,6 +101,16 @@ Set `TANKFUL_DEBUG=1` in the environment to log `used`, `remaining`, `percentLef
 }
 ```
 
+## Package website
+
+The [Next.js site](ui/) contains Tankful’s landing page, installation guide, and API reference. It is separate from the published npm package. To preview it locally:
+
+```bash
+cd ui
+npm install
+npm run dev
+```
+
 ## Known limits
 
 - **Tankful manages budget, not accuracy**: A model that skips tool calls can still write ungrounded text or omit the `Budget note`.

@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ededed;
+  --line: rgba(255, 255, 255, 0.1);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-line: var(--line);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.85);
+  color: #000;
+}
+
+/* Vertical hairlines used behind the hero art. */
+.bg-hairlines {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.07) 0 1px,
+    transparent 1px 7px
+  );
+}
+
+/* Shiki output */
+.code-body pre.shiki {
+  background: transparent !important;
+  margin: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+.code-body.with-lines pre.shiki code {
+  counter-reset: line;
+}
+.code-body.with-lines pre.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.75rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* Docs content */
+.docs-prose {
+  color: rgb(212 212 216);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.docs-prose > * + * {
+  margin-top: 1.1rem;
+}
+.docs-prose h2 {
+  margin-top: 2.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.docs-prose h3 {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #fff;
+}
+.docs-prose a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-underline-offset: 3px;
+}
+.docs-prose a:hover {
+  text-decoration-color: #fff;
+}
+.docs-prose strong {
+  color: #fff;
+  font-weight: 600;
+}
+.docs-prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.docs-prose ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.docs-prose li + li {
+  margin-top: 0.4rem;
+}
+.docs-prose li::marker {
+  color: rgba(255, 255, 255, 0.35);
+}
+.docs-prose :not(pre) > code {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.1rem 0.35rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.85em;
+  color: #fff;
+}
+.docs-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.docs-prose th {
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgb(161 161 170);
+}
+.docs-prose td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0.75rem;
+  vertical-align: top;
+}
