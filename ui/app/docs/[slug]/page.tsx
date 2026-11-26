@@ -28,31 +28,31 @@ export default async function DocPage({ params }: PageProps<"/docs/[slug]">) {
     <div className="mx-auto flex max-w-6xl gap-10 px-5 py-10 sm:px-8 lg:px-12">
       <article className="min-w-0 max-w-3xl flex-1">
         <header className="mb-8 border-b border-line pb-6">
-          <h1 className="text-3xl font-semibold tracking-tight text-white">{page.title}</h1>
-          <p className="mt-2 text-base text-zinc-400">{page.description}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-ink">{page.title}</h1>
+          <p className="mt-2 text-base text-muted">{page.description}</p>
         </header>
         <div className="docs-prose">
           <Body />
         </div>
         <nav aria-label="Pagination" className="mt-14 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
           {prev ? (
-            <Link href={`/docs/${prev.slug}`} className="border border-line p-4 transition hover:border-white/30">
-              <span className="block font-mono text-[11px] tracking-[0.12em] text-zinc-500">← PREVIOUS</span>
-              <span className="mt-1 block text-sm text-white">{prev.title}</span>
+            <Link href={`/docs/${prev.slug}`} className="border border-line p-4 transition hover:border-sage">
+              <span className="block font-mono text-[11px] tracking-[0.12em] text-muted">← PREVIOUS</span>
+              <span className="mt-1 block text-sm text-ink">{prev.title}</span>
             </Link>
           ) : (
             <span />
           )}
           {next ? (
-            <Link href={`/docs/${next.slug}`} className="border border-line p-4 text-right transition hover:border-white/30">
-              <span className="block font-mono text-[11px] tracking-[0.12em] text-zinc-500">NEXT →</span>
-              <span className="mt-1 block text-sm text-white">{next.title}</span>
+            <Link href={`/docs/${next.slug}`} className="border border-line p-4 text-right transition hover:border-sage">
+              <span className="block font-mono text-[11px] tracking-[0.12em] text-muted">NEXT →</span>
+              <span className="mt-1 block text-sm text-ink">{next.title}</span>
             </Link>
           ) : null}
         </nav>
-        <p className="mt-8 font-mono text-[11px] text-zinc-600">
+        <p className="mt-8 font-mono text-[11px] text-muted">
           Found a mistake?{" "}
-          <a href={`${site.github}/issues`} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white">
+          <a href={`${site.github}/issues`} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-ink">
             Open an issue ↗
           </a>
         </p>

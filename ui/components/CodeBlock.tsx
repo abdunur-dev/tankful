@@ -17,9 +17,9 @@ export async function CodeBlock({
 }) {
   const html = await highlight(code, lang);
   return (
-    <div className={`relative border border-line bg-[#0a0a0a] ${className}`}>
+    <div className={`relative border border-line bg-mist rounded-xl ${className}`}>
       {filename ? (
-        <div className="flex items-center justify-between border-b border-line py-1 pl-4 pr-2 font-mono text-xs text-zinc-400">
+        <div className="flex items-center justify-between border-b border-line py-1 pl-4 pr-2 font-mono text-xs text-muted">
           <span>{filename}</span>
           <CopyButton value={code} />
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BudgetHero } from "@/components/BudgetHero";
 
 import {
   createTankState,
@@ -10,13 +11,10 @@ import {
 import { OutlineButton, PrimaryButton, SectionHeading } from "@/components/Buttons";
 import { CodeBlock } from "@/components/CodeBlock";
 import { Features } from "@/components/Features";
-import { HeroArt } from "@/components/HeroArt";
 import { HookMarquee } from "@/components/HookMarquee";
 import { InstallCommand } from "@/components/InstallCommand";
 import { Levels } from "@/components/Levels";
-import { Logo } from "@/components/Logo";
 import { SetupTabs, type SetupTab } from "@/components/SetupTabs";
-import { TopNav } from "@/components/TopNav";
 import { highlight } from "@/lib/highlight";
 import { site } from "@/lib/site";
 
@@ -131,62 +129,21 @@ export default async function Home() {
   );
 
   return (
-    <div className="lg:flex">
-      <aside className="relative flex min-h-[640px] flex-col overflow-hidden border-b border-line lg:fixed lg:inset-y-0 lg:left-0 lg:min-h-0 lg:w-[40%] lg:border-b-0 lg:border-r">
-        <div className="bg-hairlines absolute inset-y-0 right-0 w-1/2 [mask-image:linear-gradient(180deg,#000,transparent_75%)]" />
-        <div className="relative z-10 p-5">
-          <Logo />
-        </div>
-        <HeroArt className="relative mx-auto mt-2 w-[78%] max-w-[420px]" />
-        <div className="relative z-10 mt-auto px-5 pb-6 sm:px-8">
-          <a
-            href={site.npm}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-line bg-black/60 px-2.5 py-1 text-xs text-zinc-300 transition hover:text-white"
-          >
-            <span aria-hidden>▲</span>
-            <span className="font-medium text-white">v{site.version}</span>
-            <span className="text-zinc-600">|</span>
-            Budget note + report file
-            <span aria-hidden>→</span>
-          </a>
-          <h1 className="mt-4 max-w-md text-3xl font-normal leading-[1.15] tracking-tight text-white sm:text-4xl">
-            The token fuel tank for eve agents
-          </h1>
-          <div className="mt-6 flex gap-3">
-            <PrimaryButton href="/docs">Get Started</PrimaryButton>
-            <OutlineButton href={site.github} external>
-              GitHub
-            </OutlineButton>
-          </div>
-          <div className="mt-12 flex items-center justify-between font-mono text-[11px] text-zinc-500">
-            <div className="flex gap-2">
-              <a href={site.github} target="_blank" rel="noopener noreferrer" className="hover:text-white">GitHub</a>
-              <span>/</span>
-              <a href={site.npm} target="_blank" rel="noopener noreferrer" className="hover:text-white">npm</a>
-              <span>/</span>
-              <a href={site.license} target="_blank" rel="noopener noreferrer" className="hover:text-white">MIT</a>
-            </div>
-            <span>v{site.version}</span>
-          </div>
-        </div>
-      </aside>
-
-      <main className="min-w-0 lg:ml-[40%] lg:w-[60%]">
-        <TopNav className="sticky top-0 z-20 bg-black/90 backdrop-blur" />
+    <div>
+      <main className="home-content">
+        <BudgetHero />
 
         <Section id="readme">
-          <p className="mb-4 font-mono text-[11px] tracking-[0.12em] text-zinc-500">README</p>
-          <p className="max-w-2xl text-[15px] leading-relaxed text-zinc-300">
+          <p className="mb-4 font-mono text-[11px] tracking-[0.12em] text-muted">README</p>
+          <p className="max-w-2xl text-[15px] leading-relaxed text-muted">
             eve can cut an agent off at a limit. Tankful lets the agent see its tank and plan around it. It counts tokens
             every turn, tells the model how much is left, gets stricter as the tank drains, and makes the agent end with a
             Budget note that says what it finished and what it skipped.
           </p>
           <InstallCommand className="mt-8 max-w-2xl" />
-          <p className="mt-4 font-mono text-[11px] tracking-[0.12em] text-zinc-500">
+          <p className="mt-4 font-mono text-[11px] tracking-[0.12em] text-muted">
             AN{" "}
-            <a href={site.eve} target="_blank" rel="noopener noreferrer" className="text-zinc-300 underline decoration-zinc-600 underline-offset-4 hover:text-white">
+            <a href={site.eve} target="_blank" rel="noopener noreferrer" className="text-muted underline decoration-zinc-600 underline-offset-4 hover:text-ink">
               EVE EXTENSION
             </a>{" "}
             · NODE ≥ 24 · MIT
@@ -205,8 +162,8 @@ export default async function Home() {
 
         <section className="border-b border-line py-10">
           <div className="mb-4 flex items-center justify-between px-6 lg:px-10">
-            <p className="font-mono text-[11px] tracking-[0.12em] text-zinc-400">HOOKS INTO EVE</p>
-            <Link href="/docs/how-it-works" className="font-mono text-[11px] tracking-[0.12em] text-zinc-500 hover:text-white">
+            <p className="font-mono text-[11px] tracking-[0.12em] text-muted">HOOKS INTO EVE</p>
+            <Link href="/docs/how-it-works" className="font-mono text-[11px] tracking-[0.12em] text-muted hover:text-ink">
               HOW IT WORKS →
             </Link>
           </div>
@@ -240,13 +197,13 @@ export default async function Home() {
             ].map((c) => (
               <div key={c.name} className="border-b border-r border-line p-5">
                 <div className="flex items-center justify-between font-mono text-[11px] tracking-[0.12em]">
-                  <span className="text-white">{c.name}</span>
-                  <span className="text-zinc-500">{c.tag}</span>
+                  <span className="text-ink">{c.name}</span>
+                  <span className="text-muted">{c.tag}</span>
                 </div>
-                <ul className="mt-4 space-y-1.5 text-sm text-zinc-400">
+                <ul className="mt-4 space-y-1.5 text-sm text-muted">
                   {c.items.map((i) => (
                     <li key={i}>
-                      <span className="mr-2 text-zinc-600">+</span>
+                      <span className="mr-2 text-muted">+</span>
                       {i}
                     </li>
                   ))}
@@ -264,7 +221,7 @@ export default async function Home() {
           </SectionHeading>
           <div className="overflow-x-auto border border-line">
             <table className="w-full text-left text-sm">
-              <thead className="font-mono text-[11px] uppercase tracking-[0.12em] text-zinc-500">
+              <thead className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
                 <tr className="border-b border-line">
                   <th className="px-4 py-3 font-normal">Run</th>
                   <th className="px-4 py-3 font-normal">Model</th>
@@ -273,7 +230,7 @@ export default async function Home() {
                   <th className="px-4 py-3 font-normal">Used / limit</th>
                 </tr>
               </thead>
-              <tbody className="text-zinc-300">
+              <tbody className="text-muted">
                 {RESULTS.map((r) => (
                   <tr key={r.run} className="border-b border-line last:border-0">
                     <td className="px-4 py-3 font-mono">{r.run}</td>
@@ -286,7 +243,7 @@ export default async function Home() {
               </tbody>
             </table>
           </div>
-          <p className="mt-4 text-sm text-zinc-500">
+          <p className="mt-4 text-sm text-muted">
             The budget is soft, since a call can’t be stopped midway, so usage ran 6% to 9% over. Set the limit about 10% below
             your real cap.
           </p>
@@ -295,8 +252,8 @@ export default async function Home() {
         <section className="relative overflow-hidden px-6 py-24 text-center lg:px-10">
           <div className="bg-hairlines absolute inset-y-0 right-0 w-1/3 [mask-image:linear-gradient(270deg,#000,transparent)]" />
           <div className="relative">
-            <p className="text-2xl tracking-tight text-white">Let your agent plan around its budget.</p>
-            <p className="mt-3 font-mono text-xs text-zinc-500">npm install tankful</p>
+            <p className="text-2xl tracking-tight text-ink">Let your agent plan around its budget.</p>
+            <p className="mt-3 font-mono text-xs text-muted">npm install tankful</p>
             <div className="mt-8 flex justify-center gap-3">
               <PrimaryButton href="/docs">Get Started</PrimaryButton>
               <OutlineButton href={site.github} external>
@@ -306,7 +263,7 @@ export default async function Home() {
           </div>
         </section>
 
-        <footer className="flex flex-col gap-2 border-t border-line px-6 py-6 font-mono text-[11px] text-zinc-500 sm:flex-row sm:justify-between lg:px-10">
+        <footer className="flex flex-col gap-2 border-t border-line px-6 py-6 font-mono text-[11px] text-muted sm:flex-row sm:justify-between lg:px-10">
           <span>© Tankful · MIT License</span>
           <span>Built for eve</span>
         </footer>

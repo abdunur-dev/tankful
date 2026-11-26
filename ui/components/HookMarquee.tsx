@@ -15,8 +15,8 @@ export function HookMarquee() {
       <div className="animate-marquee flex w-max">
         {row.map(([event, what], i) => (
           <div key={i} className="flex items-baseline gap-2 border-r border-line px-5 py-3" aria-hidden={i >= EVENTS.length}>
-            <span className="font-mono text-sm text-white">{event}</span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-zinc-500">{what}</span>
+            <span className="font-mono text-sm text-ink">{event}</span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted">{what}</span>
           </div>
         ))}
       </div>

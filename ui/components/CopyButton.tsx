@@ -14,7 +14,7 @@ export function CopyButton({ value, className = "" }: { value: string; className
           setTimeout(() => setCopied(false), 1200);
         });
       }}
-      className={`grid h-7 w-7 place-items-center text-zinc-500 transition hover:text-white ${className}`}
+      className={`grid h-7 w-7 place-items-center text-muted transition hover:text-ink ${className}`}
     >
       {copied ? (
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2">

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 const mono = "font-mono text-[11px]";
-const chip = `border border-line px-1.5 py-0.5 ${mono} text-zinc-400`;
+const chip = `border border-line px-1.5 py-0.5 ${mono} text-muted`;
 
 const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
   {
@@ -9,15 +9,15 @@ const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
     body: "Refills on every turn.started, so each task starts with a full budget.",
     visual: (
       <div className="space-y-1.5">
-        <div className="h-1.5 w-full bg-white" />
-        <div className={`${mono} text-zinc-500`}>turn.started → 100%</div>
+        <div className="h-1.5 w-full bg-sage" />
+        <div className={`${mono} text-muted`}>turn.started → 100%</div>
       </div>
     ),
   },
   {
     title: "Real token counts.",
     body: "Sums input and output tokens from usage.recorded, cached tokens included.",
-    visual: <div className={`${mono} text-zinc-400`}>3,171 in + 56 out = <span className="text-white">3,227</span></div>,
+    visual: <div className={`${mono} text-muted`}>3,171 in + 56 out = <span className="text-ink">3,227</span></div>,
   },
   {
     title: "Estimates in flight.",
@@ -25,8 +25,8 @@ const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
     visual: (
       <div className="flex items-center gap-2">
         <div className="flex h-1.5 w-32">
-          <div className="w-2/3 bg-white" />
-          <div className="w-1/3 bg-[repeating-linear-gradient(45deg,#fff_0_2px,transparent_2px_5px)] opacity-60" />
+          <div className="w-2/3 bg-sage" />
+          <div className="w-1/3 bg-[repeating-linear-gradient(45deg,#85a78e_0_2px,transparent_2px_5px)] opacity-60" />
         </div>
         <span className={chip}>estimated</span>
       </div>
@@ -57,8 +57,8 @@ const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
     visual: (
       <div className="flex items-center gap-2">
         <span className={chip}>role: system</span>
-        <span className="text-zinc-600">→</span>
-        <span className={`${chip} text-white`}>role: user</span>
+        <span className="text-muted">→</span>
+        <span className={`${chip} text-ink`}>role: user</span>
       </div>
     ),
   },
@@ -66,8 +66,8 @@ const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
     title: "check_tank tool.",
     body: "The agent can read its own tank at any time.",
     visual: (
-      <div className={`${mono} text-zinc-400`}>
-        tankful__check_tank() → <span className="text-white">&#123; level: “low” &#125;</span>
+      <div className={`${mono} text-muted`}>
+        tankful__check_tank() → <span className="text-ink">&#123; level: “low” &#125;</span>
       </div>
     ),
   },
@@ -89,7 +89,7 @@ const FEATURES: { title: string; body: string; visual: ReactNode }[] = [
         {[1, 2, 3].map((i) => (
           <span key={i} className={chip}>read_file(a.md)</span>
         ))}
-        <span className={`${mono} text-amber-300`}>⚠ loop</span>
+        <span className={`${mono} text-amber-800`}>⚠ loop</span>
       </div>
     ),
   },
@@ -105,9 +105,9 @@ export function Features() {
     <div className="grid border-l border-t border-line sm:grid-cols-2 xl:grid-cols-3">
       {FEATURES.map((f, i) => (
         <div key={f.title} className="flex min-h-48 flex-col border-b border-r border-line p-5">
-          <span className="font-mono text-[11px] text-zinc-600">{String(i + 1).padStart(2, "0")}</span>
-          <h3 className="mt-2 text-sm font-medium text-white">{f.title}</h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">{f.body}</p>
+          <span className="font-mono text-[11px] text-muted">{String(i + 1).padStart(2, "0")}</span>
+          <h3 className="mt-2 text-sm font-medium text-ink">{f.title}</h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.body}</p>
           <div className="mt-auto pt-5">{f.visual}</div>
         </div>
       ))}

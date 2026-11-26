@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { TopNav } from "@/components/TopNav";
 
 import { site } from "@/lib/site";
 
@@ -24,8 +25,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (() => {
+            const media = matchMedia('(prefers-color-scheme: dark)');
+            const apply = () => {
+              let saved;
+              try { saved = localStorage.getItem('tankful-theme'); } catch {}
+              document.documentElement.dataset.theme = saved === 'dark' || saved === 'light'
+                ? saved : media.matches ? 'dark' : 'light';
+            };
+            apply();
+            media.addEventListener('change', apply);
+            window.addEventListener('storage', e => { if (!e.key || e.key === 'tankful-theme') apply(); });
+          })();
+        ` }} />
+      </head>
+      <body>
+        <TopNav />
+        {children}
+      </body>
     </html>
   );
 }

@@ -14,7 +14,7 @@ export function MobileDocsNav({ sections }: { sections: NavSection[] }) {
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between px-5 py-3 font-mono text-[11px] tracking-[0.12em] text-zinc-300"
+        className="flex w-full items-center justify-between px-5 py-3 font-mono text-[11px] tracking-[0.12em] text-muted"
       >
         MENU
         <span aria-hidden>{open ? "×" : "+"}</span>

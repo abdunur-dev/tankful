@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 export function H2({ id, children }: { id: string; children: ReactNode }) {
   return (
     <h2 id={id} className="group scroll-mt-20">
-      <a href={`#${id}`} className="!no-underline !text-white">
+      <a href={`#${id}`} className="!no-underline !text-ink">
         {children}
-        <span aria-hidden className="ml-2 text-zinc-600 opacity-0 transition group-hover:opacity-100">#</span>
+        <span aria-hidden className="ml-2 text-muted opacity-0 transition group-hover:opacity-100">#</span>
       </a>
     </h2>
   );
@@ -22,9 +22,9 @@ export function H3({ id, children }: { id: string; children: ReactNode }) {
 
 export function Callout({ title, children, tone = "info" }: { title?: string; children: ReactNode; tone?: "info" | "warn" }) {
   return (
-    <div className={`border-l-2 bg-white/[0.03] px-4 py-3 text-sm ${tone === "warn" ? "border-amber-400" : "border-white/60"}`}>
-      {title ? <p className="!mt-0 mb-1 font-medium text-white">{title}</p> : null}
-      <div className="text-zinc-300 [&>*+*]:mt-2">{children}</div>
+    <div className={`border-l-2 bg-mist px-4 py-3 text-sm ${tone === "warn" ? "border-amber-400" : "border-sage"}`}>
+      {title ? <p className="!mt-0 mb-1 font-medium text-ink">{title}</p> : null}
+      <div className="text-muted [&>*+*]:mt-2">{children}</div>
     </div>
   );
 }
@@ -40,10 +40,10 @@ export function Cards({ items }: { items: { title: string; body: string; href: s
         <Link
           key={c.href}
           href={c.href}
-          className="group block border border-line bg-white/[0.02] p-4 !no-underline transition hover:border-white/30 hover:bg-white/[0.04]"
+          className="group block border border-line bg-mist p-4 !no-underline transition hover:border-sage hover:bg-mist"
         >
-          <span className="block font-medium text-white">{c.title}</span>
-          <span className="mt-1 block text-sm leading-relaxed text-zinc-400">{c.body}</span>
+          <span className="block font-medium text-ink">{c.title}</span>
+          <span className="mt-1 block text-sm leading-relaxed text-muted">{c.body}</span>
         </Link>
       ))}
     </div>
@@ -66,8 +66,8 @@ export function PropTable({ rows }: { rows: { name: string; type: string; def?: 
           {rows.map((r) => (
             <tr key={r.name}>
               <td><code>{r.name}</code></td>
-              <td className="whitespace-nowrap font-mono text-xs text-zinc-400">{r.type}</td>
-              <td className="whitespace-nowrap font-mono text-xs text-zinc-400">{r.def ?? "required"}</td>
+              <td className="whitespace-nowrap font-mono text-xs text-muted">{r.type}</td>
+              <td className="whitespace-nowrap font-mono text-xs text-muted">{r.def ?? "required"}</td>
               <td>{r.desc}</td>
             </tr>
           ))}

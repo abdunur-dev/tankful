@@ -12,7 +12,7 @@ export function LogoMark({ className = "h-4 w-4" }: { className?: string }) {
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link href="/" className={`inline-flex items-center gap-2 text-sm font-medium tracking-[0.08em] text-white ${className}`}>
+    <Link href="/" className={`inline-flex items-center gap-2 text-sm font-medium tracking-[0.08em] text-ink ${className}`}>
       <LogoMark />
       TANKFUL.
     </Link>

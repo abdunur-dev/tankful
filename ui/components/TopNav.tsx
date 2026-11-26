@@ -2,44 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { site } from "@/lib/site";
+import { LogoMark } from "./Logo";
 
-const ITEMS = [
-  { label: "README", href: "/", external: false },
-  { label: "DOCS", href: "/docs", external: false },
-  { label: "GITHUB", href: site.github, external: true },
-  { label: "NPM", href: site.npm, external: true },
-];
-
-export function TopNav({ className = "" }: { className?: string }) {
-  const pathname = usePathname();
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-
-  return (
-    <nav aria-label="Main" className={`flex h-12 border-b border-line font-mono text-[11px] tracking-[0.12em] ${className}`}>
-      {ITEMS.map((item) => {
-        const active = !item.external && isActive(item.href);
-        const cls = `flex flex-1 items-center justify-center gap-1 border-r border-line transition ${
-          active ? "bg-white/[0.04] text-white shadow-[inset_0_1px_0_#fff]" : "text-zinc-400 hover:text-white"
-        }`;
-        return item.external ? (
-          <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" className={`${cls} hidden sm:flex`}>
-            {item.label}
-            <span aria-hidden>↗</span>
-          </a>
-        ) : (
-          <Link key={item.label} href={item.href} className={cls} aria-current={active ? "page" : undefined}>
-            {item.label}
-          </Link>
-        );
-      })}
-      <Link
-        href="/docs/installation"
-        className="flex flex-1 items-center justify-center gap-1 bg-white text-black transition hover:bg-zinc-200"
-      >
-        GET STARTED <span aria-hidden>↗</span>
-      </Link>
+export function TopNav() {
+  const path = usePathname();
+  return <header className="site-nav">
+    <Link href="/" className="wordmark" aria-label="Tankful home"><LogoMark className="size-6" />tankful</Link>
+    <nav aria-label="Main">
+      <Link href="/" aria-current={path === "/" ? "page" : undefined}>Home</Link>
+      {path === "/" ? <a href="#features">Features</a> : <Link href="/#features">Features</Link>}
+      <Link href="/docs" aria-current={path.startsWith("/docs") ? "page" : undefined}>Docs</Link>
+      <a href={site.npm}>npm ↗</a>
+      <a className="mobile-repo" href={site.github}>GitHub</a>
     </nav>
-  );
+    <div className="nav-actions">
+      <a href={site.github}>GitHub</a>
+      <button type="button" className="theme-toggle" onClick={() => {
+        const root = document.documentElement;
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+        root.dataset.theme = theme;
+        try { localStorage.setItem("tankful-theme", theme); } catch { /* Still applies for this visit. */ }
+      }}>
+        <span className="to-dark"><span aria-hidden="true">☾</span><span className="sr-only">Switch to dark theme</span></span>
+        <span className="to-light"><span aria-hidden="true">☀</span><span className="sr-only">Switch to light theme</span></span>
+      </button>
+      <Link href="/docs/installation" className="nav-cta">Get started</Link>
+    </div>
+  </header>;
 }

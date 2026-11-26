@@ -19,8 +19,8 @@ export function SetupTabs({ tabs }: { tabs: SetupTab[] }) {
 
   return (
     <div className="grid border border-line md:grid-cols-[1fr_15rem]">
-      <div className="min-w-0 bg-[#0a0a0a]">
-        <div className="flex items-center justify-between border-b border-line py-1 pl-4 pr-2 font-mono text-xs text-zinc-400">
+      <div className="min-w-0 bg-mist rounded-xl">
+        <div className="flex items-center justify-between border-b border-line py-1 pl-4 pr-2 font-mono text-xs text-muted">
           <span>{current.filename}</span>
           <CopyButton value={current.code} />
         </div>
@@ -39,14 +39,14 @@ export function SetupTabs({ tabs }: { tabs: SetupTab[] }) {
               aria-selected={t.id === active}
               onClick={() => setActive(t.id)}
               className={`border-b border-line px-4 py-3 text-left font-mono text-[11px] tracking-[0.12em] transition ${
-                t.id === active ? "bg-white/[0.04] text-white shadow-[inset_-1px_0_0_#fff]" : "text-zinc-500 hover:text-zinc-300"
+                t.id === active ? "bg-mist text-ink shadow-[inset_-1px_0_0_#779782]" : "text-muted hover:text-muted"
               }`}
             >
               {t.label}
             </button>
           ))}
         </div>
-        <p className="mt-auto p-4 text-sm leading-relaxed text-zinc-400">{current.description}</p>
+        <p className="mt-auto p-4 text-sm leading-relaxed text-muted">{current.description}</p>
       </div>
     </div>
   );

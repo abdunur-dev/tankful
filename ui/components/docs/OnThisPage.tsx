@@ -23,7 +23,7 @@ export function OnThisPage({ items }: { items: TocItem[] }) {
   if (items.length === 0) return null;
   return (
     <nav aria-label="On this page" className="text-[13px]">
-      <p className="mb-3 flex items-center gap-2 text-zinc-300">
+      <p className="mb-3 flex items-center gap-2 text-muted">
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
           <path d="M4 6h16M4 12h10M4 18h13" />
         </svg>
@@ -35,7 +35,7 @@ export function OnThisPage({ items }: { items: TocItem[] }) {
             <a
               href={`#${i.id}`}
               className={`-ml-px block border-l py-1 pl-3 transition ${
-                active === i.id ? "border-white text-white" : "border-transparent text-zinc-500 hover:text-zinc-300"
+                active === i.id ? "border-sage text-ink" : "border-transparent text-muted hover:text-muted"
               }`}
             >
               {i.title}
